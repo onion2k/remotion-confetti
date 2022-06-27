@@ -10,6 +10,7 @@ declare module 'remotion-confetti/index' {
   /// <reference types="react" />
   import { iConfettiOptions } from 'remotion-confetti/interfaces';
   export const Confetti: (confettiConfig: Omit<iConfettiOptions, 'width' | 'height'>) => JSX.Element;
+  export default Confetti;
 
 }
 declare module 'remotion-confetti/interfaces' {

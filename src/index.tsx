@@ -35,3 +35,5 @@ export const Confetti = (confettiConfig: Omit<iConfettiOptions, 'width' | 'heigh
     width: `${video.width}px`, height: `${video.height}px`, position: 'absolute'
   }} />;
 };
+
+export default Confetti;
