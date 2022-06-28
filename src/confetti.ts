@@ -51,8 +51,7 @@ const updateFetti = (context: CanvasRenderingContext2D, fetti: iFetti, frame: nu
   fetti.tiltAngle = 0.1 * frame;
   fetti.tiltSin = Math.sin(fetti.tiltAngle);
   fetti.tiltCos = Math.cos(fetti.tiltAngle);
-  // eslint-disable-next-line @remotion/deterministic-randomness
-  fetti.random = Math.random() + 2;
+  fetti.random = random(frame) + 2;
   fetti.wobbleX = x + 10 * fetti.scalar * Math.cos(w);
   fetti.wobbleY = y + 10 * fetti.scalar * Math.sin(w);
 

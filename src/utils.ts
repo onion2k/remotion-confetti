@@ -1,3 +1,4 @@
+import { random } from 'remotion';
 import { iConfettiOptions } from './interfaces'
 
 const confettiDefaults: iConfettiOptions = {
@@ -46,8 +47,7 @@ export const onlyPositiveInt = (number: number): number => {
 }
 
 export const randomInt = (min: number, max: number) => {
-  // eslint-disable-next-line @remotion/deterministic-randomness
-  return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(random('int') * (max - min)) + min;
 }
 
 export const toDecimal = (str: string) => {
