@@ -1,3 +1,5 @@
+![AI Generated Confetti image](/assets/confetti.png?raw=true "Confetti imagined by Midjourney")
+
 # Confetti for Remotion
 
 remotion-confetti is a Confetti cannon component for Remotion videos. You can use it to put pops of confetti in your
@@ -43,6 +45,8 @@ remotion-confetti is based on Canvas Confetti (https://github.com/catdad/canvas-
 - `y`: Vertical position of the origin in pixels.
 
 # An example
+
+See remotion-confetti in action at https://stackblitz.com/edit/github-fadf5w?file=src%2FComposition.tsx
 
 ```js
 import { AbsoluteFill } from 'remotion';
