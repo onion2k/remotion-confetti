@@ -1,4 +1,6 @@
-![Animated Confetti](/assets/confetti.gif?raw=true "Confetti!")
+<p align="center">
+  <img src="/assets/confetti.gif?raw=true" title="Animated confetti!" alt="confetti firing upwards and then floating down" />
+</p>
 
 # Confetti for Remotion
 
