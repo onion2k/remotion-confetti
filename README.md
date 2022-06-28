@@ -1,4 +1,4 @@
-![AI Generated Confetti image](/assets/confetti.png?raw=true "Confetti imagined by Midjourney")
+![Animated Confetti](/assets/confetti.gif?raw=true "Confetti!")
 
 # Confetti for Remotion
 
