@@ -4,6 +4,7 @@
   "jsxBracketSameLine": false,
   "useTabs": false,
   "tabWidth": 2,
+  "semi": false,
   "overrides": [
     {
       "files": ["*.yml"],

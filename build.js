@@ -1,6 +1,6 @@
-const { build } = require('esbuild');
-const { peerDependencies } = require('./package.json');
-const { Generator } = require('npm-dts');
+const { build } = require('esbuild')
+const { peerDependencies } = require('./package.json')
+const { Generator } = require('npm-dts')
 
 const shared = {
   entryPoints: ['src/index.tsx'],
@@ -8,21 +8,21 @@ const shared = {
   external: Object.keys(peerDependencies),
   sourcemap: true,
   minify: true,
-};
+}
 
 build({
   ...shared,
   outfile: 'dist/index.js',
-}).catch(() => process.exit(1));
+}).catch(() => process.exit(1))
 
 build({
   ...shared,
   outfile: 'dist/index.esm.js',
   format: 'esm',
   target: ['esnext'],
-}).catch(() => process.exit(1));
+}).catch(() => process.exit(1))
 
 new Generator({
   entry: 'src/index.tsx',
   output: 'dist/index.d.ts',
-}).generate();
+}).generate()

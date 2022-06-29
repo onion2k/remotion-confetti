@@ -1,12 +1,12 @@
-import { random } from 'remotion';
-import type { iRandomPhysics, iFetti, IConfettiOptions } from './interfaces';
-import { prop, onlyPositiveInt, randomInt, colorsToRgb } from './utils';
+import { random } from 'remotion'
+import type { iRandomPhysics, iFetti, IConfettiOptions } from './interfaces'
+import { prop, onlyPositiveInt, randomInt, colorsToRgb } from './utils'
 
-const RAD = Math.PI / 180;
+const RAD = Math.PI / 180
 
 const randomPhysics = (opts: iRandomPhysics): iFetti => {
-  const radAngle = opts.angle * RAD;
-  const radSpread = opts.spread * RAD;
+  const radAngle = opts.angle * RAD
+  const radSpread = opts.spread * RAD
 
   return {
     x: opts.x,
@@ -33,39 +33,39 @@ const randomPhysics = (opts: iRandomPhysics): iFetti => {
     gravity: opts.gravity * 3,
     ovalScalar: 0.6,
     scalar: opts.scalar,
-  };
-};
+  }
+}
 
 const updateFetti = (
   context: CanvasRenderingContext2D,
   fetti: iFetti,
   frame: number
 ) => {
-  const w = fetti.wobble + fetti.wobbleSpeed * frame;
+  const w = fetti.wobble + fetti.wobbleSpeed * frame
 
-  let v = fetti.velocity;
-  let { x } = fetti;
-  let { y } = fetti;
+  let v = fetti.velocity
+  let { x } = fetti
+  let { y } = fetti
 
   for (let i = 0; i < frame; i++) {
-    v *= fetti.decay;
-    x += Math.cos(fetti.angle2D) * v + fetti.drift;
-    y += Math.sin(fetti.angle2D) * v + fetti.gravity;
+    v *= fetti.decay
+    x += Math.cos(fetti.angle2D) * v + fetti.drift
+    y += Math.sin(fetti.angle2D) * v + fetti.gravity
   }
 
-  fetti.tiltAngle = 0.1 * frame;
-  fetti.tiltSin = Math.sin(fetti.tiltAngle);
-  fetti.tiltCos = Math.cos(fetti.tiltAngle);
-  fetti.random = random(frame) + 2;
-  fetti.wobbleX = x + 10 * fetti.scalar * Math.cos(w);
-  fetti.wobbleY = y + 10 * fetti.scalar * Math.sin(w);
+  fetti.tiltAngle = 0.1 * frame
+  fetti.tiltSin = Math.sin(fetti.tiltAngle)
+  fetti.tiltCos = Math.cos(fetti.tiltAngle)
+  fetti.random = random(frame) + 2
+  fetti.wobbleX = x + 10 * fetti.scalar * Math.cos(w)
+  fetti.wobbleY = y + 10 * fetti.scalar * Math.sin(w)
 
-  const progress = frame / fetti.totalTicks;
+  const progress = frame / fetti.totalTicks
 
-  const x1 = x + fetti.random * fetti.tiltCos;
-  const y1 = y + fetti.random * fetti.tiltSin;
-  const x2 = fetti.wobbleX + fetti.random * fetti.tiltCos;
-  const y2 = fetti.wobbleY + fetti.random * fetti.tiltSin;
+  const x1 = x + fetti.random * fetti.tiltCos
+  const y1 = y + fetti.random * fetti.tiltSin
+  const x2 = fetti.wobbleX + fetti.random * fetti.tiltCos
+  const y2 = fetti.wobbleY + fetti.random * fetti.tiltSin
 
   context.fillStyle =
     'rgba(' +
@@ -76,8 +76,8 @@ const updateFetti = (
     fetti.color.b +
     ', ' +
     (1 - progress) +
-    ')';
-  context.beginPath();
+    ')'
+  context.beginPath()
 
   // Console.log(fetti.shape)
 
@@ -90,87 +90,87 @@ const updateFetti = (
       (Math.PI / 10) * w,
       0,
       2 * Math.PI
-    );
+    )
   } else {
-    context.moveTo(Math.floor(x), Math.floor(y));
-    context.lineTo(Math.floor(fetti.wobbleX), Math.floor(y1));
-    context.lineTo(Math.floor(x2), Math.floor(y2));
-    context.lineTo(Math.floor(x1), Math.floor(fetti.wobbleY));
+    context.moveTo(Math.floor(x), Math.floor(y))
+    context.lineTo(Math.floor(fetti.wobbleX), Math.floor(y1))
+    context.lineTo(Math.floor(x2), Math.floor(y2))
+    context.lineTo(Math.floor(x1), Math.floor(fetti.wobbleY))
   }
 
-  context.closePath();
-  context.fill();
+  context.closePath()
+  context.fill()
 
-  return true;
-};
+  return true
+}
 
 const animate = (
   canvas: HTMLCanvasElement,
   fettis: iFetti[],
   size: { width: number; height: number }
 ) => {
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext('2d')
 
-  let animatingFettis = fettis.slice();
+  let animatingFettis = fettis.slice()
 
   function onDone() {
-    if (!context) return;
-    context.clearRect(0, 0, size.width, size.height);
+    if (!context) return
+    context.clearRect(0, 0, size.width, size.height)
   }
 
   /*
   The animation bit
   */
   function update(frame: number) {
-    if (!context) return;
+    if (!context) return
 
     if (!size.width && !size.height) {
-      size.width = canvas.width;
-      size.height = canvas.height;
+      size.width = canvas.width
+      size.height = canvas.height
     }
 
-    context.clearRect(0, 0, size.width, size.height);
+    context.clearRect(0, 0, size.width, size.height)
 
     animatingFettis = animatingFettis.filter((fetti) => {
-      return updateFetti(context, fetti, frame);
-    });
+      return updateFetti(context, fetti, frame)
+    })
 
     if (!animatingFettis.length) {
-      onDone();
+      onDone()
     }
   }
 
   return {
     canvas,
     update,
-  };
-};
+  }
+}
 
 export const confettiCannon = (canvas: HTMLCanvasElement) => {
-  let animationObj: any;
+  let animationObj: any
 
   function fireLocal(
     options: IConfettiOptions,
     size: { width: number; height: number }
   ) {
-    const particleCount = prop(options, 'particleCount', onlyPositiveInt);
-    const angle = prop(options, 'angle', Number);
-    const spread = prop(options, 'spread', Number);
-    const startVelocity = prop(options, 'startVelocity', Number);
-    const decay = prop(options, 'decay', Number);
-    const gravity = prop(options, 'gravity', Number);
-    const drift = prop(options, 'drift', Number);
-    const colors = prop(options, 'colors', colorsToRgb);
-    const ticks = prop(options, 'ticks', Number);
-    const shapes = prop(options, 'shapes');
-    const scalar = prop(options, 'scalar');
-    const origin = { x: options.x, y: options.y };
+    const particleCount = prop(options, 'particleCount', onlyPositiveInt)
+    const angle = prop(options, 'angle', Number)
+    const spread = prop(options, 'spread', Number)
+    const startVelocity = prop(options, 'startVelocity', Number)
+    const decay = prop(options, 'decay', Number)
+    const gravity = prop(options, 'gravity', Number)
+    const drift = prop(options, 'drift', Number)
+    const colors = prop(options, 'colors', colorsToRgb)
+    const ticks = prop(options, 'ticks', Number)
+    const shapes = prop(options, 'shapes')
+    const scalar = prop(options, 'scalar')
+    const origin = { x: options.x, y: options.y }
 
-    let temp = particleCount;
-    const fettis = [];
+    let temp = particleCount
+    const fettis = []
 
-    const startX = origin.x;
-    const startY = origin.y;
+    const startX = origin.x
+    const startY = origin.y
 
     while (temp--) {
       fettis.push(
@@ -189,30 +189,30 @@ export const confettiCannon = (canvas: HTMLCanvasElement) => {
           scalar,
           i: temp,
         })
-      );
+      )
     }
 
     // If we have a previous canvas already animating,
     // add to it
     if (animationObj) {
-      return animationObj.addFettis(fettis);
+      return animationObj.addFettis(fettis)
     }
 
-    animationObj = animate(canvas, fettis, size);
+    animationObj = animate(canvas, fettis, size)
   }
 
   function fire(options: IConfettiOptions) {
     const size = {
       width: options.width,
       height: options.height,
-    };
+    }
 
-    return fireLocal(options, size);
+    return fireLocal(options, size)
   }
 
   const frame = (currentFrame: number) => {
-    if (animationObj) animationObj.update(currentFrame);
-  };
+    if (animationObj) animationObj.update(currentFrame)
+  }
 
-  return { fire, frame };
-};
+  return { fire, frame }
+}
