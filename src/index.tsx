@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react'
-import { useCurrentFrame, useVideoConfig } from 'remotion'
+import {
+  continueRender,
+  delayRender,
+  useCurrentFrame,
+  useVideoConfig,
+} from 'remotion'
 import { confettiCannon } from './confetti'
 import type { IConfettiOptions } from './interfaces'
 
@@ -9,6 +14,7 @@ export const Confetti = (confettiConfig: ConfettiConfig) => {
   const frame = useCurrentFrame()
   const video = useVideoConfig()
 
+  const [handle] = useState(() => delayRender('Initializing confetti'))
   const [instantiated, setInstantiated] = useState(false)
 
   const ref = useRef<HTMLCanvasElement>(null)
@@ -42,7 +48,8 @@ export const Confetti = (confettiConfig: ConfettiConfig) => {
 
   useEffect(() => {
     setInstantiated(true)
-  }, [])
+    continueRender(handle)
+  }, [handle])
 
   const style: React.CSSProperties = useMemo(() => {
     return {
