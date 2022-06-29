@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useMemo} from 'react';
+import React, {useEffect, useRef, useMemo, useState} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {confettiCannon} from './confetti';
 import type {IConfettiOptions} from './interfaces';
@@ -9,6 +9,8 @@ export const Confetti = (confettiConfig: ConfettiConfig) => {
 	const frame = useCurrentFrame();
 	const video = useVideoConfig();
 
+	const [instantiated, setInstantiated] = useState(false);
+
 	const ref = useRef<HTMLCanvasElement>(null);
 
 	const stringifiedConfig = useMemo(
@@ -17,6 +19,10 @@ export const Confetti = (confettiConfig: ConfettiConfig) => {
 	);
 
 	const confettiInstance = useMemo(() => {
+		if (!instantiated) {
+			return null;
+		}
+
 		const config = JSON.parse(stringifiedConfig) as IConfettiOptions;
 		const conf = confettiCannon(ref.current as HTMLCanvasElement);
 		conf.fire({
@@ -26,11 +32,17 @@ export const Confetti = (confettiConfig: ConfettiConfig) => {
 		});
 
 		return conf;
-	}, [stringifiedConfig, video.height, video.width]);
+	}, [instantiated, stringifiedConfig, video.height, video.width]);
 
 	useEffect(() => {
-		confettiInstance.frame(frame);
+		if (confettiInstance) {
+			confettiInstance.frame(frame);
+		}
 	}, [confettiInstance, frame]);
+
+	useEffect(() => {
+		setInstantiated(true);
+	}, []);
 
 	const style: React.CSSProperties = useMemo(() => {
 		return {
