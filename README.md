@@ -17,7 +17,7 @@ In your composition import the `Confetti` component from remotion-confetti and a
 
 ```js
 <Composition>
-    <Confetti {...options} />
+  <Confetti {...options} />
 </Composition>
 ```
 
@@ -27,7 +27,7 @@ The confetti component will create a canvas that overlays your video content, an
 
 remotion-confetti is based on Canvas Confetti (https://github.com/catdad/canvas-confetti), and has mostly the same options.
 
-### Original Canvase Confetti options
+### Original Canvas Confetti options
 
 - `particleCount`: The number of confetti to launch. More is always fun... but be cool, there's a lot of math involved.
 - `angle`: The angle in which to launch the confetti, in degrees. 90 is straight up.
@@ -51,37 +51,37 @@ remotion-confetti is based on Canvas Confetti (https://github.com/catdad/canvas-
 See remotion-confetti in action at https://stackblitz.com/edit/github-fadf5w?file=src%2FComposition.tsx
 
 ```js
-import { AbsoluteFill } from 'remotion';
-import Confetti from 'remotion-confetti';
+import { AbsoluteFill } from 'remotion'
+import Confetti, { ConfettiConfig } from 'remotion-confetti'
 
 export const ConfettiExample = () => {
+  const confettiConfig1: ConfettiConfig = {
+    particleCount: 200,
+    startVelocity: 30,
+    spread: 60,
+    x: 320,
+    y: 360,
+    scalar: 1,
+  }
 
-	const confettiConfig1 = {
-		particleCount: 200,
-		startVelocity: 30,
-		spread: 60,
-		x: 320,
-		y: 360,
-		scalar: 1
-	}
+  const confettiConfig2: ConfettiConfig = {
+    particleCount: 200,
+    startVelocity: 50,
+    decay: 0.8,
+    spread: 360,
+    ticks: 100,
+    gravity: 0.5,
+    x: 960,
+    y: 360,
+    scalar: 1,
+    colors: ['#000000', '#FFFFFF'],
+  }
 
-	const confettiConfig2 = {
-		particleCount: 200,
-		startVelocity: 50,
-		decay: 0.8,
-		spread: 360,
-		ticks: 100,
-		gravity: 0.5,
-		x: 960,
-		y: 360,
-		scalar: 1,
-		colors: ['#000000', '#FFFFFF']
-	}
-
-	return <AbsoluteFill style={{ backgroundColor: 'black' }}>
-		<Confetti {...confettiConfig1} />
-		<Confetti {...confettiConfig2} />
-	</AbsoluteFill>;
-};
-
+  return (
+    <AbsoluteFill style={{ backgroundColor: 'black' }}>
+      <Confetti {...confettiConfig1} />
+      <Confetti {...confettiConfig2} />
+    </AbsoluteFill>
+  )
+}
 ```
