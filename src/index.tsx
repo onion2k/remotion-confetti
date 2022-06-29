@@ -10,7 +10,12 @@ import type { IConfettiOptions } from './interfaces'
 
 export type ConfettiConfig = Omit<IConfettiOptions, 'width' | 'height'>
 
-export const Confetti = (confettiConfig: ConfettiConfig) => {
+export const Confetti = ({
+  style,
+  ...confettiConfig
+}: ConfettiConfig & {
+  style?: React.CSSProperties
+}) => {
   const frame = useCurrentFrame()
   const video = useVideoConfig()
 
@@ -51,16 +56,22 @@ export const Confetti = (confettiConfig: ConfettiConfig) => {
     continueRender(handle)
   }, [handle])
 
-  const style: React.CSSProperties = useMemo(() => {
+  const cssStyle: React.CSSProperties = useMemo(() => {
     return {
       width: video.width,
       height: video.height,
       position: 'absolute',
+      ...(style ?? {}),
     }
-  }, [video.height, video.width])
+  }, [video.height, video.width, style])
 
   return (
-    <canvas ref={ref} width={video.width} height={video.height} style={style} />
+    <canvas
+      ref={ref}
+      width={video.width}
+      height={video.height}
+      style={cssStyle}
+    />
   )
 }
 
