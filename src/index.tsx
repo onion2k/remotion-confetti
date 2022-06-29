@@ -1,26 +1,32 @@
 import React, {useEffect, useRef, useMemo} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {confettiCannon} from './confetti';
-import {IConfettiOptions} from './interfaces';
+import type {IConfettiOptions} from './interfaces';
 
-export const Confetti = (
-	confettiConfig: Omit<IConfettiOptions, 'width' | 'height'>
-) => {
+export type ConfettiConfig = Omit<IConfettiOptions, 'width' | 'height'>;
+
+export const Confetti = (confettiConfig: ConfettiConfig) => {
 	const frame = useCurrentFrame();
 	const video = useVideoConfig();
 
 	const ref = useRef<HTMLCanvasElement>(null);
 
+	const stringifiedConfig = useMemo(
+		() => JSON.stringify(confettiConfig),
+		[confettiConfig]
+	);
+
 	const confettiInstance = useMemo(() => {
+		const config = JSON.parse(stringifiedConfig) as IConfettiOptions;
 		const conf = confettiCannon(ref.current as HTMLCanvasElement);
 		conf.fire({
-			...confettiConfig,
+			...config,
 			width: video.width,
 			height: video.height,
 		});
 
 		return conf;
-	}, [confettiConfig, video.height, video.width]);
+	}, [stringifiedConfig, video.height, video.width]);
 
 	useEffect(() => {
 		confettiInstance.frame(frame);
@@ -40,4 +46,3 @@ export const Confetti = (
 };
 
 export default Confetti;
-export {IConfettiOptions};

@@ -1,5 +1,5 @@
 import {random} from 'remotion';
-import {iRandomPhysics, iFetti, IConfettiOptions} from './interfaces';
+import type {iRandomPhysics, iFetti, IConfettiOptions} from './interfaces';
 import {prop, onlyPositiveInt, randomInt, colorsToRgb} from './utils';
 
 const RAD = Math.PI / 180;
@@ -210,8 +210,8 @@ export const confettiCannon = (canvas: HTMLCanvasElement) => {
 		return fireLocal(options, size);
 	}
 
-	const frame = (frame: number) => {
-		if (animationObj) animationObj.update(frame);
+	const frame = (currentFrame: number) => {
+		if (animationObj) animationObj.update(currentFrame);
 	};
 
 	return {fire, frame};
