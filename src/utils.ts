@@ -1,5 +1,5 @@
 import { random } from 'remotion'
-import { IConfettiOptions } from './interfaces'
+import type { IConfettiOptions } from './interfaces'
 
 const confettiDefaults: IConfettiOptions = {
   particleCount: 50,
