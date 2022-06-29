@@ -1,10 +1,4 @@
-import React, {
-	useState,
-	useEffect,
-	useRef,
-	useMemo,
-	ReactEventHandler,
-} from 'react';
+import React, {useEffect, useRef, useMemo} from 'react';
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {confettiCannon} from './confetti';
 import {IConfettiOptions} from './interfaces';
