@@ -1,5 +1,5 @@
 {
-	"name": "@jonny/remotion-confetti",
+	"name": "remotion-confetti",
 	"version": "0.1.0",
 	"description": "Confetti for Remotion",
 	"main": "dist/index.esm.js",
