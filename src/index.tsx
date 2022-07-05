@@ -1,39 +1,78 @@
-import { useState, useEffect, useRef } from 'react'
-import { useCurrentFrame, useVideoConfig } from 'remotion';
+import React, { useEffect, useRef, useMemo, useState } from 'react'
+import {
+  continueRender,
+  delayRender,
+  useCurrentFrame,
+  useVideoConfig,
+} from 'remotion'
 import { confettiCannon } from './confetti'
-import { iConfettiOptions } from './interfaces'
+import type { IConfettiOptions } from './interfaces'
 
-export const Confetti = (confettiConfig: Omit<iConfettiOptions, 'width' | 'height'>) => {
+export type ConfettiConfig = Omit<IConfettiOptions, 'width' | 'height'>
 
-  const frame = useCurrentFrame();
-  const video = useVideoConfig();
+export const Confetti = ({
+  style,
+  ...confettiConfig
+}: ConfettiConfig & {
+  style?: React.CSSProperties
+}) => {
+  const frame = useCurrentFrame()
+  const video = useVideoConfig()
 
-  const ref = useRef<HTMLCanvasElement | null>(null);
-  const [confettiInstance, setConfettiInstance] = useState<{ fire: (options: iConfettiOptions) => void, frame: (frame: number) => void } | null>(null);
+  const [handle] = useState(() => delayRender('Initializing confetti'))
+  const [instantiated, setInstantiated] = useState(false)
 
-  useEffect(() => {
-    if (ref.current !== null && !confettiInstance) {
-      ref.current.width = video.width;
-      ref.current.height = video.height;
-      const confetti = confettiCannon(ref.current);
-      confetti.fire({
-        ...confettiConfig,
-        width: video.width,
-        height: video.height
-      });
-      setConfettiInstance(confetti);
+  const ref = useRef<HTMLCanvasElement>(null)
+
+  const stringifiedConfig = useMemo(
+    () => JSON.stringify(confettiConfig),
+    [confettiConfig]
+  )
+
+  const confettiInstance = useMemo(() => {
+    if (!instantiated) {
+      return null
     }
-  }, [confettiConfig, confettiInstance, video])
+
+    const config = JSON.parse(stringifiedConfig) as IConfettiOptions
+    const conf = confettiCannon(ref.current as HTMLCanvasElement)
+    conf.fire({
+      ...config,
+      width: video.width,
+      height: video.height,
+    })
+
+    return conf
+  }, [instantiated, stringifiedConfig, video.height, video.width])
 
   useEffect(() => {
     if (confettiInstance) {
-      confettiInstance.frame(frame);
+      confettiInstance.frame(frame)
     }
-  }, [confettiInstance, frame]);
+  }, [confettiInstance, frame])
 
-  return <canvas ref={ref} style={{
-    width: `${video.width}px`, height: `${video.height}px`, position: 'absolute'
-  }} />;
-};
+  useEffect(() => {
+    setInstantiated(true)
+    continueRender(handle)
+  }, [handle])
 
-export default Confetti;
+  const cssStyle: React.CSSProperties = useMemo(() => {
+    return {
+      width: video.width,
+      height: video.height,
+      position: 'absolute',
+      ...(style ?? {}),
+    }
+  }, [video.height, video.width, style])
+
+  return (
+    <canvas
+      ref={ref}
+      width={video.width}
+      height={video.height}
+      style={cssStyle}
+    />
+  )
+}
+
+export default Confetti
