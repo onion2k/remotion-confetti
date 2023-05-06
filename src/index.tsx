@@ -12,9 +12,11 @@ export type ConfettiConfig = Omit<IConfettiOptions, 'width' | 'height'>
 
 export const Confetti = ({
   style,
+  fireAtFrame=0,
   ...confettiConfig
 }: ConfettiConfig & {
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  fireAtFrame?: number
 }) => {
   const frame = useCurrentFrame()
   const video = useVideoConfig()
@@ -47,9 +49,10 @@ export const Confetti = ({
 
   useEffect(() => {
     if (confettiInstance) {
-      confettiInstance.frame(frame)
+      const relativeCurrentFrame = Math.max(0,frame - fireAtFrame)
+      confettiInstance.frame(Math.max(0, relativeCurrentFrame))
     }
-  }, [confettiInstance, frame])
+  }, [confettiInstance, frame, fireAtFrame])
 
   useEffect(() => {
     setInstantiated(true)
