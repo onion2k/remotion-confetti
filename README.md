@@ -34,6 +34,7 @@ remotion-confetti is based on Canvas Confetti (https://github.com/catdad/canvas-
 - `spread`: How far off center the confetti can go, in degrees. 45 means the confetti will launch at the defined angle plus or minus 22.5 degrees.
 - `startVelocity`: How fast the confetti will start going, in pixels.
 - `decay`: How quickly the confetti will lose speed. Keep this number between 0 and 1, otherwise the confetti will gain speed. Better yet, just never change it.
+- `fireAtFrame`: The frame the confetti will be fired at.
 - `gravity`: How quickly the particles are pulled down. 1 is full gravity, 0.5 is half gravity, etc., but there are no limits. You can even make particles go up if you'd like.
 - `drift`: How much to the side the confetti will drift. The default is 0, meaning that they will fall straight down. Use a negative number for left and positive number for right.
 - `ticks`: How many times the confetti will move. This is abstract... but play with it if the confetti disappear too quickly for you.
